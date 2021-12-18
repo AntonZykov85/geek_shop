@@ -20,15 +20,6 @@ class UserLoginForm(AuthenticationForm):
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control py-4'
 
-    def save(self):
-        user = super(UserRegisterForm, self).save()
-        user.is_active = False
-        salt = hashlib.sha1(str(random.random()).encode('utf8')).hexdigest()[:6]
-        user.activation_key = hashlib.sha1((user.email + salt).encode('utf8')).hexdigest()
-        user.save()
-        return user
-
-
 class UserRegisterForm(UserCreationForm):
     class Meta:
         model = User
@@ -45,6 +36,13 @@ class UserRegisterForm(UserCreationForm):
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control py-4'
 
+    def save(self):
+        user = super(UserRegisterForm, self).save()
+        user.is_active = False
+        salt = hashlib.sha1(str(random.random()).encode('utf8')).hexdigest()[:6]
+        user.activation_key = hashlib.sha1((user.email + salt).encode('utf8')).hexdigest()
+        user.save()
+        return user
 
 class UserProfilerForm(UserChangeForm):
     image = forms.ImageField(widget=forms.FileInput(), required=False)

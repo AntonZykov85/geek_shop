@@ -18,8 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-3!qm%#5%$5g0-(%vu4%j@^x9(nvvh5h*wm^kngwb7dyq&qx4*c'
 from dotenv import load_dotenv
-load_dotenv(BASE_DIR/ '.env')
-
+load_dotenv(BASE_DIR / '.env')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -67,6 +66,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.i18n',
+                'mainapp.context_processors.basket',
             ],
         },
     },
@@ -153,5 +153,5 @@ EMAIL_USE_SSL = True if os.getenv('EMAIL_USE_SSL') == 'True' else False
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = 'tmp/emails/'
 
-#EMAIL_HOST_USER ,EMAIL_HOST_PASSWORD = None,None
+# EMAIL_HOST_USER ,EMAIL_HOST_PASSWORD = None,None
 # python -m smtpd -n -c DebuggingServer localhost:25
