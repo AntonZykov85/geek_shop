@@ -44,7 +44,7 @@ class RegisterListView(FormView,BaseClassContextMixin):
             messages.error(request, form.errors)
         return render(request, self.template_name, {'form': form})
 
-    def send_verify_link(self,user):
+    def send_verify_link(self, user):
         verify_link = reverse('authapp:verify',args=[user.email,user.activation_key])
         subject = f'Для активации учетной записи {user.username} пройдите по ссылке'
         message = f'Для подтверждения учетной записи {user.username}  на портале \n {settings.DOMAIN_NAME}{verify_link}'
