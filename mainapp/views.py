@@ -30,7 +30,7 @@ def products(request,id_category=None,page=1):
     else:
         products = Product.objects.all()
 
-    paginator = Paginator(products,per_page=3)
+    paginator = Paginator(products, per_page=3)
 
     try:
         products_paginator = paginator.page(page)
@@ -51,9 +51,3 @@ class ProductDetail(DetailView):
     """
     model = Product
     template_name = 'mainapp/detail.html'
-
-    # def get_context_data(self, **kwargs):
-    #     context = super(ProductDetail, self).get_context_data(**kwargs)
-    #     product = self.get_object()
-    #     context['product'] = product
-    #     return context
