@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import FormView, UpdateView
-from authapp.forms import UserLoginForm, UserRegisterForm, UserProfilerForm
+from authapp.forms import UserLoginForm, UserRegisterForm, UserProfilerForm, UserProfileEditForm
 from authapp.models import User
 from baskets.models import Basket
 from mainapp.mixin import BaseClassContextMixin, UserDispatchMixin
@@ -44,7 +44,7 @@ class RegisterListView(FormView,BaseClassContextMixin):
             messages.error(request, form.errors)
         return render(request, self.template_name, {'form': form})
 
-    def send_verify_link(self,user):
+    def send_verify_link(self, user):
         verify_link = reverse('authapp:verify',args=[user.email,user.activation_key])
         subject = f'Для активации учетной записи {user.username} пройдите по ссылке'
         message = f'Для подтверждения учетной записи {user.username}  на портале \n {settings.DOMAIN_NAME}{verify_link}'
@@ -72,6 +72,13 @@ class ProfileFormView(UpdateView,BaseClassContextMixin,UserDispatchMixin):
     # success_message = 'OK'
     title = 'GeekShop - Профиль'
 
+    def post(self, request, *args, **kwargs):
+        form = UserProfilerForm(data=request.POST, files=request.FILES, instance=request.user)
+        profile_form = UserProfilerForm(request.POST, instance=request.user.userprofile)
+        if form.is_valid() and profile_form.is_valid():
+            form.save()
+            return redirect(self.success_url)
+
 
     def form_valid(self, form):
         messages.set_level(self.request,messages.SUCCESS)
@@ -84,7 +91,7 @@ class ProfileFormView(UpdateView,BaseClassContextMixin,UserDispatchMixin):
 
     def get_context_data(self, **kwargs):
         context = super(ProfileFormView, self).get_context_data(**kwargs)
-        context['baskets'] = Basket.objects.filter(user=self.request.user)
+        context['profile'] = UserProfileEditForm(instance=self.request.user.userprofile)
         return context
 
 class Logout(LogoutView):
