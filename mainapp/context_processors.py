@@ -1,5 +1,7 @@
 from baskets.models import Basket
 
+
+
 def basket(request):
     baskets_list = []
     if request.user.is_authenticated:
