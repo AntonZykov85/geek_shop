@@ -4,18 +4,31 @@ window.onload = function () {
 
     let quantity_arr = []
     let price_arr = []
+<<<<<<< HEAD
     let total_forms = parseInt($('input[name=orderitems-TOTAL_FORMS]').val())
     // console.log(total_forms)
 
     let order_total_quantity = parseInt($('.order_total_quantity').text()) || 0;
     let order_total_cost = parseInt($('.order_total_cost').text().replace(',', '.')) || 0;
+=======
+    let total_forms = parseFloat($('input[name=orderitems-TOTAL_FORMS]').val())
+    // console.log(total_forms)
+
+    let order_total_quantity = parseFloat($('.order_total_quantity').text()) || 0;
+    let order_total_cost = parseFloat($('.order_total_cost').text().replace(',', '.')) || 0;
+>>>>>>> lesson_2_part2
 
     // console.log(order_total_quantity)
    //  console.log(order_total_cost)
 
     for (let i = 0; i < total_forms; i++) {
+<<<<<<< HEAD
         quantity = parseInt($('input[name=orderitems-' + i + '-quantity]').val())
         price = parseInt($('.orderitems-' + i + '-price').text().replace(',', '.'))
+=======
+        quantity = parseFloat($('input[name=orderitems-' + i + '-quantity]').val())
+        price = parseFloat($('.orderitems-' + i + '-price').text().replace(',', '.'))
+>>>>>>> lesson_2_part2
 
         quantity_arr[i] = quantity;
         if (price) {
@@ -31,9 +44,15 @@ window.onload = function () {
     $('.order_form').on('click', 'input[type=number]', function () {
 
         let target = event.target;
+<<<<<<< HEAD
         orderitem_num = parseInt(target.name.replace('orderitems-', '').replace('-quantity', ''));
         if (price_arr[orderitem_num]) {
             orderitem_quantity = parseInt(target.value);
+=======
+        orderitem_num = parseFloat(target.name.replace('orderitems-', '').replace('-quantity', ''));
+        if (price_arr[orderitem_num]) {
+            orderitem_quantity = parseFloat(target.value);
+>>>>>>> lesson_2_part2
             delta_quantity = orderitem_quantity - quantity_arr[orderitem_num];
             quantity_arr[orderitem_num] = orderitem_quantity;
             orderSummaryUpdate(price_arr[orderitem_num], delta_quantity);
@@ -44,7 +63,11 @@ window.onload = function () {
     $('.order_form').on('click', 'input[type=checkbox]', function () {
 
         let target = event.target;
+<<<<<<< HEAD
         orderitem_num = parseInt(target.name.replace('orderitems-', '').replace('-DELETE', ''));
+=======
+        orderitem_num = parseFloat(target.name.replace('orderitems-', '').replace('-DELETE', ''));
+>>>>>>> lesson_2_part2
         if (target.checked) {
             delta_quantity = -quantity_arr[orderitem_num]
         } else {
@@ -59,7 +82,11 @@ window.onload = function () {
         order_total_cost = Number((order_total_cost + delta_cost).toFixed(2));
         order_total_quantity = order_total_quantity + delta_quantity;
         $('.order_total_quantity').html(order_total_quantity.toString());
+<<<<<<< HEAD
         $('.order_total_cost').html(order_total_cost.toString() + ',00');
+=======
+        $('.order_total_cost').html(order_total_cost.toString());
+>>>>>>> lesson_2_part2
     }
 
     $('.formset_row').formset({
@@ -72,7 +99,11 @@ window.onload = function () {
 
     function deleteOrderItem(row) {
         let target_name = row[0].querySelector('input[type="number"]').name
+<<<<<<< HEAD
         orderitem_num = parseInt(target_name.replace('orderitems-', '').replace('-quantity', ''))
+=======
+        orderitem_num = parseFloat(target_name.replace('orderitems-', '').replace('-quantity', ''))
+>>>>>>> lesson_2_part2
         delta_quantity = -quantity_arr[orderitem_num]
         orderSummaryUpdate(price_arr[orderitem_num], delta_quantity)
     }
@@ -80,7 +111,11 @@ window.onload = function () {
     $('.order_form select').change(function () {
 
         let target = event.target;
+<<<<<<< HEAD
         orderitem_num = parseInt(target.name.replace('orderitems-', '').replace('-product', ''));
+=======
+        orderitem_num = parseFloat(target.name.replace('orderitems-', '').replace('-product', ''));
+>>>>>>> lesson_2_part2
         let orderitem_product_pk = target.options[target.selectedIndex].value;
 
         console.log(orderitem_num)
@@ -114,7 +149,11 @@ window.onload = function () {
  $('.order_form select').change(function () {
 
         let target = event.target;
+<<<<<<< HEAD
         orderitem_num = parseInt(target.name.replace('orderitems-', '').replace('-product', ''));
+=======
+        orderitem_num = parseFloat(target.name.replace('orderitems-', '').replace('-product', ''));
+>>>>>>> lesson_2_part2
         let orderitem_product_pk = target.options[target.selectedIndex].value;
 
         console.log(orderitem_num)
