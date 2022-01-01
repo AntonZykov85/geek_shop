@@ -26,7 +26,7 @@ class Order(models.Model):
     created = models.DateTimeField(verbose_name='Заказ cоздан', auto_now_add=True)
     updated = models.DateTimeField(verbose_name='Заказ обновлен', auto_now=True)
     status = models.CharField(choices=ORDER_STATUS_CHOICES, verbose_name='статус', max_length=3, default=FORMING)
-    is_active = models.BooleanField(verbose_name='Активный заказ', default=True)
+    is_active = models.BooleanField(verbose_name='Активный заказ', db_index=True, default=True)
 
     def __str__(self):
         return f'Текущий заказ {self.pk}'
