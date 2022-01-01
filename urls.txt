@@ -1,3 +1,12 @@
- http://89.108.78.203
- http://89.108.78.203/products
- http://89.108.78.203/users/login/ POST username=root&password=1
+http://89.108.78.203
+http://89.108.78.203/products/
+http://89.108.78.203/users/login/ POST username=root&password=1
+http://89.108.78.203/users/profile/
+http://89.108.78.203/orders/
+http://89.108.78.203/orders/create/
+http://89.108.78.203/products/
+http://89.108.78.203/products/category/1
+http://89.108.78.203/products/category/2
+http://89.108.78.203/products/category/3
+http://89.108.78.203/products/category/4
+http://89.108.78.203/products/category/5

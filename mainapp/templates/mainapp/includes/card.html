@@ -17,9 +17,9 @@
                         <p class="card-text">{{ product.category.name }}</p>
                     </div>
                     <div class="card-footer text-center">
-                        <button type="button" class="btn btn-outline-success" value="{{ product.id  }}">
-                            Отправить в корзину
-                        </button>
+                                <div class="card-footer text-center">
+                                    <a href="{% url 'baskets:basket_add' product.id %}" class="btn btn-outline-success">Отправить в корзину</a>
+                                </div>
                     </div>
                 </div>
             </div>
