@@ -14,30 +14,30 @@ class Order(models.Model):
     CANCEL = 'CNC'
 
     ORDER_STATUS_CHOICES = (
-        (FORMING, 'Заказ формируется'),
-        (SEND_TO_PROCEED, 'Заказ отправлен в обработку'),
-        (PAID, 'Заказ оплачен'),
-        (PROCEEDED, 'Заказ обрабатывается'),
-        (READY, 'Заказ готов к выдачи'),
-        (CANCEL, 'Отмена заказа'),
+        (FORMING, 'формируется'),
+        (SEND_TO_PROCEED, 'отправлен в обработку'),
+        (PAID, 'оплачено'),
+        (PROCEEDED, 'обрабатывается'),
+        (READY, 'готов к выдачи'),
+        (CANCEL, 'отмена заказа'),
     )
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    created = models.DateTimeField(verbose_name='Заказ cоздан', auto_now_add=True)
-    updated = models.DateTimeField(verbose_name='Заказ обновлен', auto_now=True)
+    created = models.DateTimeField(verbose_name='создан', auto_now_add=True)
+    updated = models.DateTimeField(verbose_name='обновлен', auto_now=True)
     status = models.CharField(choices=ORDER_STATUS_CHOICES, verbose_name='статус', max_length=3, default=FORMING)
-    is_active = models.BooleanField(verbose_name='Активный заказ', db_index=True, default=True)
+    is_active = models.BooleanField(verbose_name='активный', default=True)
 
     def __str__(self):
         return f'Текущий заказ {self.pk}'
 
-    # def get_total_quantity(self):
-    #     items = self.orderitems.select_related()
-    #     return sum(list(map(lambda x: x.quantity, items)))
-    #
-    # def get_total_cost(self):
-    #     items = self.orderitems.select_related()
-    #     return sum(list(map(lambda x: x.get_product_cost(), items)))
+    def get_total_quantity(self):
+        items = self.orderitems.select_related()
+        return sum(list(map(lambda x: x.quantity, items)))
+
+    def get_total_cost(self):
+        items = self.orderitems.select_related()
+        return sum(list(map(lambda x: x.get_product_cost(), items)))
 
     def get_items(self):
         pass
@@ -57,9 +57,9 @@ class Order(models.Model):
         }
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order,verbose_name='Заказ', related_name='orderitems', on_delete=models.CASCADE)
-    product = models.ForeignKey(Product,verbose_name='Продукты', on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(verbose_name='Количество', default=0)
+    order = models.ForeignKey(Order, verbose_name='заказ', related_name='orderitems', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, verbose_name='продукты', on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(verbose_name='количество', default=0)
 
     def get_product_cost(self):
         return self.product.price * self.quantity

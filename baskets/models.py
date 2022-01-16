@@ -14,7 +14,7 @@ from django.utils.functional import cached_property
 class Basket(models.Model):
    # objects = BasketQuerySet.as_manager()
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='basket')
+    user = models.ForeignKey(User, on_delete=models.CASCADE,related_name='basket')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0)
     create_timestamp = models.DateTimeField(auto_now_add=True)
@@ -23,16 +23,10 @@ class Basket(models.Model):
     def __str__(self):
         return f'Корзина для  {self.user.username} | Продукт{self.product.name}'
 
-    def sum(self):
-        return self.quantity * self.product.price
-
-    # @property
-    # def get_baskets(self):
-    #      baskets = Basket.objects.filter(user=self.user)
-    #      return baskets
     @cached_property
     def get_items_cached(self):
         return self.user.basket.select_related()
+        # self.user.basket.select_related()
 
     def sum(self):
         return self.quantity * self.product.price
@@ -46,7 +40,17 @@ class Basket(models.Model):
         baskets = self.get_items_cached
         return sum(basket.quantity for basket in baskets)
 
-    # def total_sum(self):
+    @staticmethod
+    def get_item(pk):
+        return Basket.objects.get(pk=pk).quantity
+
+# @property
+# def get_baskets(self):
+#      baskets = Basket.objects.filter(user=self.user)
+#      return baskets
+
+
+   # def total_sum(self):
     #     baskets = Basket.objects.filter(user=self.user)
     #     return sum(basket.sum() for basket in baskets)
     #
@@ -67,7 +71,3 @@ class Basket(models.Model):
     #         self.product.quantity -= self.quantity
     #     self.product.save()
     #     super(Basket, self).save(*args, **kwargs)
-
-    @staticmethod
-    def get_item(pk):
-        return Basket.objects.get(pk=pk).quantity
