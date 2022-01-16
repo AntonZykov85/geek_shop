@@ -4,7 +4,7 @@ from django.db import models
 # Create your models here.
 class ProductCategory(models.Model):
     name = models.CharField(max_length=128)
-    description = models.TextField(blank=True,null=True)
+    description = models.TextField(blank=True, null=True)
     is_active = models.BooleanField(db_index=True, default=True)
 
     def __str__(self):
