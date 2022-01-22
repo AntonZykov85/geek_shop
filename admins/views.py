@@ -1,3 +1,6 @@
+from django.db.models import F
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from django.shortcuts import render
 from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponseRedirect
@@ -12,6 +15,12 @@ from admins.forms import UserAdminRegisterForm, UserAdminProfileForm, CategoryUp
 from authapp.models import User
 from mainapp.mixin import BaseClassContextMixin, CustomDispatchMixin
 from mainapp.models import Product, ProductCategory
+from django.db import connection
+
+def db_profile_by_type(prefix, type, queries):
+   update_queries = list(filter(lambda x: type in x['sql'], queries))
+   print(f'db_profile {type} for {prefix}:')
+   [print(query['sql']) for query in update_queries]
 
 
 class IndexTemplateView(TemplateView):
@@ -45,7 +54,8 @@ class UserDeleteView(DeleteView,BaseClassContextMixin,CustomDispatchMixin):
     title = 'Админка | Удалить пользователя'
 
     def delete(self, request, *args, **kwargs):
-        self.object =self.get_object()
+        self.object = self.get_object()
+        self.object.prouct_set.update(is_active=False)
         self.object.is_active = False
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
@@ -81,7 +91,20 @@ class CategoryUpdateView(UpdateView,BaseClassContextMixin,CustomDispatchMixin):
     title = 'Админка | Обновления категории'
     success_url = reverse_lazy('admins:admin_category')
 
-class CategoryCreateView(CreateView,BaseClassContextMixin,CustomDispatchMixin):
+    def form_valid(self, form):
+        if 'discount' or 'upper_price' in form.cleaned_data:
+            discount = form.cleaned_data['discount']
+            upper_price = form.cleaned_data['upper_price']
+            if discount:
+                self.object.product_set.update(price=F('price') * (1 - discount / 100))
+                db_profile_by_type(self.__class__, 'UPDATE', connection.queries)
+            if upper_price:
+                self.object.product_set.update(price=F('price') * (1 + upper_price / 100))
+                db_profile_by_type(self.__class__, 'UPDATE', connection.queries)
+            return HttpResponseRedirect(self.get_success_url())
+
+
+class CategoryCreateView(CreateView, BaseClassContextMixin, CustomDispatchMixin):
     model = ProductCategory
     template_name = 'admins/admin-category-create.html'
     success_url = reverse_lazy('admins:admin_category')

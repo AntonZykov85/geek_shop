@@ -40,6 +40,7 @@ class Basket(models.Model):
         baskets = self.get_items_cached
         return sum(basket.quantity for basket in baskets)
 
+
     @staticmethod
     def get_item(pk):
         return Basket.objects.get(pk=pk).quantity

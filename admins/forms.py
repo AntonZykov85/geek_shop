@@ -36,8 +36,9 @@ class UserAdminProfileForm(UserProfilerForm):
 class CategoryUpdateFormAdmin(forms.ModelForm):
     # name = forms.CharField(widget=forms.TextInput())
     # description = forms.CharField(widget=forms.TextInput(), required=False)
-    # # is_active = forms.BooleanField(widget=forms.CheckboxInput())
-
+    # is_active = forms.BooleanField(widget=forms.CheckboxInput())
+    discount = forms.IntegerField(label='скидка', required=False, min_value=0, max_value=95, initial=0)
+    upper_price = forms.IntegerField(label='повышение цены', required=False, min_value=0, max_value=100, initial=0)
 
     class Meta:
         model = ProductCategory
