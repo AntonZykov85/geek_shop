@@ -15,8 +15,10 @@
                 <h1 class="my-4">GeekShop</h1>
                 <div class="list-group">
                     {% for category in categories %}
+                        {% if  category.is_active == True %}
                         <a href="{% url 'mainapp:category' category.id %}"
                            class="list-group-item">{{ category.name }}</a>
+                        {% endif %}
                     {% endfor %}
                 </div>
 

@@ -1,6 +1,7 @@
 <div class="card_add_basket">
     <div class="row">
         {% for product in products %}
+            {% if product.is_active == True %}
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="card h-100">
                     <a href="#">
@@ -23,6 +24,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
         {% endfor %}
     </div>
 </div>
