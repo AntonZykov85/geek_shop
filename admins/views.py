@@ -54,8 +54,7 @@ class UserDeleteView(DeleteView,BaseClassContextMixin,CustomDispatchMixin):
     title = 'Админка | Удалить пользователя'
 
     def delete(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        self.object.product_set.update(is_active=False)
+        self.object =self.get_object()
         self.object.is_active = False
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
