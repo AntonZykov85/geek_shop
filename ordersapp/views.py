@@ -127,6 +127,16 @@ def get_product_price(request,pk):
             return JsonResponse({'price':product.price})
         return JsonResponse({'price':0})
 
+def payment_result(request):
+    status = request.GET.get('ik_inv_st')
+    if status == 'succsess':
+        order_pk = request.GET.get('ik_pm_no')
+        order_item = Order.objects.get(pk=order_pk)
+        order_item.status = Order.PAID
+        order_item.save()
+    return HttpResponseRedirect(reverse('orders:list'))
+
+
 # @receiver(pre_save, sender=Basket)
 # @receiver(pre_save, sender=OrderItem)
 # def product_quantity_update_save(sender, instance, **kwargs):
