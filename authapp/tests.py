@@ -1,10 +1,11 @@
 from django.conf import settings
 from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.test import TestCase
 from django.test.client import Client
 
 # Create your tests here.
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 from authapp.models import User
 
@@ -49,11 +50,14 @@ class UserManagementTestCase(TestCase):
 
         # нужно допилить код для редиректа
         def get(self, request, *args, **kwargs):
-            get = super(LoginListView, self).get(request, *args, **kwargs)
             if request.user.is_authenticated:
-                return HttpResponseRedirect(reverse_lazy(self.success_url))
-            return get
-        self.assertEqual(response.status_code, 302)
+                return HttpResponseRedirect(reverse('index'))
+            # return HttpResponseRedirect(reverse('authapp:login'))
+            else:
+                context = {
+                    'form': self.form_class
+                }
+                return render(request, self.template_name, context)
 
     # 2.Делае регистрацию протестриуем
     def test_register(self):
