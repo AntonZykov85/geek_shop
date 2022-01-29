@@ -81,11 +81,8 @@
 
                         <li class="page-item {% if not products.has_next %} disabled {% endif %}">
                             <a class="page-link"
-                               {% if  products.filter.category %}
                                href="{% if products.has_next %} {% url 'mainapp:page' products.next_page_number %} {% endif %}"
                                tabindex="-1" aria-disabled="true">Next</a>
-                               {% else %}
-                               {% endif %}
                         </li>
 
 
