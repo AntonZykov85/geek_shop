@@ -15,11 +15,13 @@
                 <h1 class="my-4">GeekShop</h1>
                 <div class="list-group">
                     {% for category in categories %}
-{#                        {% if  category.is_active == True %}#}
-                        <a href="{% url 'mainapp:category' category.id %}"
+                        {% if  category.is_active == True %}
+                           <a href="{% url 'mainapp:category' category.id %}"
                            class="list-group-item">{{ category.name }}</a>
-{#                        {% endif %}#}
+                        {% endif %}
                     {% endfor %}
+                        <a href="{% url 'mainapp:products' %}"
+                          class="list-group-item">Все товары</a>
                 </div>
 
             </div>
@@ -79,8 +81,11 @@
 
                         <li class="page-item {% if not products.has_next %} disabled {% endif %}">
                             <a class="page-link"
+                               {% if  products.filter.category %}
                                href="{% if products.has_next %} {% url 'mainapp:page' products.next_page_number %} {% endif %}"
                                tabindex="-1" aria-disabled="true">Next</a>
+                               {% else %}
+                               {% endif %}
                         </li>
 
 
@@ -98,7 +103,7 @@
 {% block footer %}
     <footer class="py-5 bg-dark">
         <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; GeekShop 2021</p>
+            <p class="m-0 text-center text-white">Copyright &copy; GeekShop 2022</p>
         </div>
     </footer>
 {% endblock %}
